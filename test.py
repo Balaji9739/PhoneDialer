@@ -1,39 +1,38 @@
-"""
-Qxf2: Example script to run one test against ATP_WTA app using Appium
-The test will navigate to ATP Singles Rankings list and confirm that Novak
-Djokovic is the top player listed and get his personal details from a table.
-
-"""
-import unittest, time, os
-from appium import webdriver
-from time import sleep
+import unittest
+import sys
+from selenium import webdriver
+sys.path.append('C:\\Users\\Admin\\Desktop\\Project')
+from Pages.pages import MainPage, SearchPage
+import Basetest
 
 
-class Android_ATP_WTA(unittest.TestCase):
-    "Class to run tests against the Phone dialer app"
+class AmazonTest(unittest.TestCase):
 
     def setUp(self):
-        "Setup for the test"
-        desired_caps = {}
-        desired_caps['platformName'] = 'Android'
-        desired_caps['platformVersion'] = '9'
-        desired_caps['deviceName'] = 'fda96ada'
-        # Since the app is already installed launching it using package and activity name
-        desired_caps['appPackage'] = 'com.android.dialer'
-        desired_caps['appActivity'] = 'com.android.dialer.TwelveKeyDialer'
-        # Adding appWait Activity since the activity name changes as the focus shifts to the ATP WTA app's first page
-        desired_caps['appWaitActivity'] = 'com.android.dialer.TwelveKeyDialer'
-        self.driver = webdriver.Remote('http://localhost:4722/wd/hub', desired_caps)
+        # create a new Chrome session
+		Basetest.Setup()
+
+        self.driver = webdriver.Chrome('C:\\Users\\Admin\\Desktop\\chromedriver.exe')
+        self.driver.implicitly_wait(30)
+        self.driver.maximize_window()
+        # navigate to the application home page
+        self.driver.get("https://www.amazon.com")
+
+    def test_search_by_text(self):
+        # Time to wait amazon.com open
+        amazon_main_page = MainPage(self.driver)
+        assert amazon_main_page.verify_amazon_site(), "Verifies that the  text 'amazon' appears in page title"
+        amazon_main_page.input_headphones("Headphones")
+
+        amazon_search_page = SearchPage(self.driver)
+        assert amazon_search_page.verify_headphones_text(), "Verified headphones text"
+        assert amazon_search_page.select_bestseller_headphones(), "Get bestsellers headphone"
+
 
     def tearDown(self):
-        "Tear down the test"
+        # close the browser window
         self.driver.quit()
 
-    def test_atp_wta(self):
-        pass
 
-
-# ---START OF SCRIPT
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(Android_ATP_WTA)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+if __name__ == "__main__":
+    unittest.main()
