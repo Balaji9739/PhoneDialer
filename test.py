@@ -13,7 +13,7 @@ class AmazonTest(unittest.TestCase):
 		Basetest.Setup()
 
         self.driver = webdriver.Chrome('C:\\Users\\Admin\\Desktop\\chromedriver.exe')
-        self.driver.implicitly_wait(30)
+        self.driver.implicitly_wait(15)
         self.driver.maximize_window()
         # navigate to the application home page
         self.driver.get("https://www.amazon.com")
