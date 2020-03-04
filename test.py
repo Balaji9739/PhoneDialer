@@ -10,8 +10,7 @@ class AmazonTest(unittest.TestCase):
 
     def setUp(self):
         # create a new Chrome session
-		Basetest.Setup()
-
+        Basetest.Setup()
         self.driver = webdriver.Chrome('C:\\Users\\Admin\\Desktop\\chromedriver.exe')
         self.driver.implicitly_wait(15)
         self.driver.maximize_window()
